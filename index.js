@@ -58,6 +58,35 @@ app.get('/api/meetups', async (req, res) => {
   res.json(result);
 });
 
+app.get('/api/meetups/favorites', async (req, res) => {
+  console.log('api/meetups favorites data requested');
+
+  const result = await client
+    .db('meetupsData')
+    .collection('meetups')
+    .find({favorite: true})
+    .toArray();
+
+  res.json(result);
+});
+
+app.put('/api/meetups/favorites/:id', async (req, res) => {
+  console.log('api/meetups favorites data requested');
+  const meetupId = req.params.id;
+  const meetupById = await client
+                      .db('meetupsData')
+                      .collection('meetups')
+                      .findOne({id: meetupId});
+  
+  const favorite = !meetupById.favorite;
+  const result = await client
+    .db('meetupsData')
+    .collection('meetups')
+    .updateOne({id: meetupId}, {$set: {favorite: favorite}});
+
+    res.json(result);
+});
+
 app.post('/api/meetups', async (req, res) => {
   console.log('api/meetups data posted');
   const meetup = req.body;

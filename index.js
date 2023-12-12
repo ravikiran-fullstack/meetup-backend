@@ -105,6 +105,14 @@ app.post('/api/meetups', async (req, res) => {
   }
 });
 
+app.delete('/api/meetups/:id', async(req, res) => {
+  console.log('api/meetups data deleted');
+  const meetupId = req.params.id;
+  
+  const result = await client.db('meetupsData').collection('meetups').deleteOne({id: meetupId});
+  res.json(result);
+})
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

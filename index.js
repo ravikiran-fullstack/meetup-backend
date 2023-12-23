@@ -64,7 +64,7 @@ app.get('/api/meetups/favorites', async (req, res) => {
   const result = await client
     .db('meetupsData')
     .collection('meetups')
-    .find({favorite: true})
+    .find({ favorite: true })
     .toArray();
 
   res.json(result);
@@ -74,17 +74,17 @@ app.put('/api/meetups/favorites/:id', async (req, res) => {
   console.log('api/meetups favorites data requested');
   const meetupId = req.params.id;
   const meetupById = await client
-                      .db('meetupsData')
-                      .collection('meetups')
-                      .findOne({id: meetupId});
-  
+    .db('meetupsData')
+    .collection('meetups')
+    .findOne({ id: meetupId });
+
   const favorite = !meetupById.favorite;
   const result = await client
     .db('meetupsData')
     .collection('meetups')
-    .updateOne({id: meetupId}, {$set: {favorite: favorite}});
+    .updateOne({ id: meetupId }, { $set: { favorite: favorite } });
 
-    res.json(result);
+  res.json(result);
 });
 
 app.post('/api/meetups', async (req, res) => {
@@ -105,13 +105,16 @@ app.post('/api/meetups', async (req, res) => {
   }
 });
 
-app.delete('/api/meetups/:id', async(req, res) => {
+app.delete('/api/meetups/:id', async (req, res) => {
   console.log('api/meetups data deleted');
   const meetupId = req.params.id;
-  
-  const result = await client.db('meetupsData').collection('meetups').deleteOne({id: meetupId});
+
+  const result = await client
+    .db('meetupsData')
+    .collection('meetups')
+    .deleteOne({ id: meetupId });
   res.json(result);
-})
+});
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
